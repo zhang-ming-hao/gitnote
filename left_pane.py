@@ -63,6 +63,7 @@ class LeftPane(wx.Panel):
         # 绑定事件
         self.tree.Bind(wx.EVT_RIGHT_DOWN, self.OnTreeMenu, self.tree)
         self.tree.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndEdit, self.tree)
+        self.tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnTreeSelect, self.tree)
 
         self.Bind(wx.EVT_MENU, self.OnNewDir, id=self.ID_NEW_DIR)
         self.Bind(wx.EVT_MENU, self.OnNewNote, id=self.ID_NEW_NOTE)
@@ -274,8 +275,11 @@ class LeftPane(wx.Panel):
             else:
                 # 新建笔记
                 os.makedirs(path)
-                fp = open(os.path.join(path, ".md"), "w")
+                mdPath = os.path.join(path, ".md")
+                fp = open(mdPath, "w")
                 fp.close()
+
+                self.parent.centerPane.OpenNote(mdPath)
 
             self.tree.SetItemData(item, path)
 
@@ -294,3 +298,16 @@ class LeftPane(wx.Panel):
             shutil.rmtree(path)
             self.tree.Delete(self.curItem)
             self.curItem = self.root
+
+    # --------------------------------------------------------------------------------
+    def OnTreeSelect(self, evt):
+        """
+        树节点选择事件处理
+
+        :param evt:  事件参数
+        """
+
+        item = evt.GetItem()
+        path = self.tree.GetItemData(item)
+        if self.IsNote(path):
+            self.parent.centerPane.OpenNote(os.path.join(path, ".md"))
