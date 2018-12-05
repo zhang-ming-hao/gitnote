@@ -11,6 +11,9 @@ import sys
 import codecs
 import wx.stc as stc
 import wx.html2 as webview
+import wx.lib.agw.aui as aui
+import wx.lib.agw.fourwaysplitter as FWS
+
 from SuperMarkdown import SuperMarkdown
 
 import md_editor
@@ -37,17 +40,41 @@ class CenterPane(wx.Panel):
         self.notePath = ""
 
         # 绘制界面
+        # sizer = wx.BoxSizer(wx.HORIZONTAL)
+        #
+        # self.editor = md_editor.MarkdownEditor(self)
+        # self.editor.Enable(False)
+        # sizer.Add(self.editor, 1, wx.EXPAND)
+        #
+        # self.webview = webview.WebView.New(self)
+        # sizer.Add(self.webview, 1, wx.EXPAND)
+        self.mgr = aui.AuiManager()
+        self.mgr.SetManagedWindow(self)
+
+        # 创建工具栏
+        self.toolbar = aui.AuiToolBar(self, -1, wx.DefaultPosition, wx.DefaultSize,
+                                      agwStyle=aui.AUI_TB_DEFAULT_STYLE | aui.AUI_TB_OVERFLOW)
+
+        self.mgr.AddPane(self.toolbar, aui.AuiPaneInfo().Name("toolbar").ToolbarPane().Top())
+
+        # 创建内容区
+        self.cPanel = wx.Panel(self, -1)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.editor = md_editor.MarkdownEditor(self)
-        self.editor.Enable(False)
+        # 创建编辑区
+        self.editor = md_editor.MarkdownEditor(self.cPanel)
         sizer.Add(self.editor, 1, wx.EXPAND)
 
-        self.webview = webview.WebView.New(self)
+        # 创建显示区
+        self.webview = webview.WebView.New(self.cPanel)
         sizer.Add(self.webview, 1, wx.EXPAND)
 
-        self.SetSizer(sizer)
-        self.Layout()
+        self.cPanel.SetSizer(sizer)
+        self.cPanel.AutoLayout = True
+
+        self.mgr.AddPane(self.cPanel, aui.AuiPaneInfo().Name("content").Center())
+
+        self.mgr.Update()
 
         # 绑定事件
         self.Bind(stc.EVT_STC_CHANGE, self.OnEditorChange)
@@ -95,3 +122,15 @@ class CenterPane(wx.Panel):
         # 显示html内容
         root = os.path.split(sys.argv[0])[0]
         self.webview.LoadURL(os.path.join(root, htmlPath))
+
+    # --------------------------------------------------------------------------------
+    def test(self):
+        # print(self.mgr.SavePerspective())
+        # pane = self.mgr.GetPaneByName("editer")
+        # print(dir(pane))
+        # pane.Hide()
+        # self.mgr.SetDockSizeConstraint(0.5, 0.5)
+        # self.mgr.Update()
+        #print(dir(pane))
+        self.editor.Show(False)
+        self.cPanel.Layout()

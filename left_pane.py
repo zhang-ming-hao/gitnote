@@ -54,13 +54,15 @@ class LeftPane(wx.Panel):
         self.il = wx.ImageList(16, 16)
         self.dirIcon = self.il.Add(wx.Bitmap(os.path.join(self.parent.DIR_RES, 'dir.png')))
         self.fileIcon = self.il.Add(wx.Bitmap(os.path.join(self.parent.DIR_RES, 'file.png')))
+        self.treeIcon = self.il.Add(wx.Bitmap(os.path.join(self.parent.DIR_RES, 'tree.png')))
 
         self.tree.SetImageList(self.il)
         self.root = self.tree.AddRoot(u"我的笔记")
         self.tree.SetItemData(self.root, self.notesDir)
-        self.tree.SetItemImage(self.root, self.dirIcon, wx.TreeItemIcon_Normal)
+        self.tree.SetItemImage(self.root, self.treeIcon, wx.TreeItemIcon_Normal)
 
         # 绑定事件
+        self.Bind(wx.EVT_BUTTON, self.OnLogin)
         self.tree.Bind(wx.EVT_RIGHT_DOWN, self.OnTreeMenu, self.tree)
         self.tree.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndEdit, self.tree)
         self.tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnTreeSelect, self.tree)
@@ -256,7 +258,6 @@ class LeftPane(wx.Panel):
 
         if self.tree.GetItemImage(item) == self.dirIcon:
             # 处理目录
-
             if oPath:
                 # 修改目录名
                 os.rename(oPath, path)
@@ -267,6 +268,7 @@ class LeftPane(wx.Panel):
                 fp.close()
 
             self.tree.SetItemData(item, path)
+            self.tree.Expand(item)
         else:
             # 处理笔记
             if oPath:
@@ -311,3 +313,9 @@ class LeftPane(wx.Panel):
         path = self.tree.GetItemData(item)
         if self.IsNote(path):
             self.parent.centerPane.OpenNote(os.path.join(path, ".md"))
+
+
+    # --------------------------------------------------------------------------------
+    def OnLogin(self, evt):
+
+        self.parent.centerPane.test()

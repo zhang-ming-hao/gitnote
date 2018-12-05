@@ -33,6 +33,7 @@ class MainFrame(wx.Frame):
         """
 
         wx.Frame.__init__(self, parent, -1, APP_TITLE, style=wx.DEFAULT_FRAME_STYLE)
+        self.SetIcon(wx.Icon(os.path.join(self.DIR_RES, "gitnote.ico"), wx.BITMAP_TYPE_ICO))
         self.Maximize()
 
         # 初始化目录
@@ -60,7 +61,7 @@ class MainFrame(wx.Frame):
         """
 
         leftPane = left_pane.LeftPane(self)
-        self.mgr.AddPane(leftPane, aui.AuiPaneInfo().Name("left pane").Left().Caption("笔记目录").
+        self.mgr.AddPane(leftPane, aui.AuiPaneInfo().Name("left pane").Left().CaptionVisible(False).
                          Position(1).MinimizeButton(True).CloseButton(False).MinSize((320, -1)))
 
         return leftPane
@@ -74,8 +75,8 @@ class MainFrame(wx.Frame):
         """
 
         centerPane = center_pane.CenterPane(self)
-        self.mgr.AddPane(centerPane, aui.AuiPaneInfo().Name("center pane").Center().Caption("笔记内容").
-                         Position(1).MinimizeButton(False).CloseButton(False).MinSize((320, -1)))
+        self.mgr.AddPane(centerPane, aui.AuiPaneInfo().Name("center pane").Center().CaptionVisible(False).
+                         Position(1).MinimizeButton(False).CloseButton(False).MinSize((200, -1)))
 
         return centerPane
 
