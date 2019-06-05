@@ -5,20 +5,33 @@ class MdEditor {
         // 标题DIV
         this._titleDiv = $("#title");
 
-        // 放置编辑器的DIV
+        // 编辑器DIV
         this.editorDiv = $("#editor_div");
 
-        // 编辑器内容
-        this._content = this.editorDiv.children("textarea");
+        // 编辑器textarea
+        this._content = $("#editor");
 
         // 编辑器对象
         this.editor = editormd("editor_div", {
-            width: "90%",
+            width: "95%",
             height: this.GetEditorHeight(),
             syncScrolling: "single",
             path: "../lib/",
-            flowChart: true
+            tex: true,
+            taskList: true,
+            flowChart: true,
+            sequenceDiagram : true,
+            onchange : () => {this.SaveContent()},
+            toolbarIcons: ["undo", "redo", "|",
+                "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                "h1", "h2", "h3", "h4", "h5", "h6", "|",
+                "list-ul", "list-ol", "hr", "|",
+                "link", "reference-link", "image", "code", "code-block", "table", "|",
+                "goto-line", "watch", "preview", "fullscreen", "clear", "search",]
         });
+
+        // 加载文件内容
+        this.GetContent();
     }
 
     // 设置文件标题
@@ -38,7 +51,7 @@ class MdEditor {
 
     // 取得编辑内容
     get content() {
-        this.editor.getValue();
+        return this._content.val();
     }
 
     // 计算编辑器的高度
@@ -51,10 +64,19 @@ class MdEditor {
 
         return wHeight - oTop - 10;
     }
+
+    // 取得md文件内容
+    GetContent() {
+        mdbox.get_content((data) =>{
+            this.content = data;
+        });
+    }
+
+    // 保存文件内容
+    SaveContent() {
+        mdbox.save_content(this.content)
+    }
 }
 
-// 页面初始化
-$(function () {
-    let obj = new(MdEditor);
-    console.log(obj.content);
-});
+// 页面全局变量
+let page = new(MdEditor);

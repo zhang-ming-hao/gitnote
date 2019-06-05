@@ -14,6 +14,8 @@ import wx
 import sys
 from cefpython3 import cefpython as cef
 
+import mdbox
+
 
 class MainFrame(wx.Frame):
     """
@@ -46,6 +48,13 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_SET_FOCUS, self.OnSetFocus)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_IDLE, self.OnIdle)
+
+        js = cef.JavascriptBindings()
+        box = mdbox.MDBox(os.path.join("note", "test.md"))
+        js.SetObject('mdbox', box)
+
+        self.browser.SetJavascriptBindings(js)
+
 
     def OnSetFocus(self, _):
         """
@@ -80,6 +89,7 @@ class MainFrame(wx.Frame):
         """
 
         cef.MessageLoopWork()
+
 
 class MainApp(wx.App):
     """
