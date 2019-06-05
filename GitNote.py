@@ -22,7 +22,14 @@ class MainFrame(wx.Frame):
     主框架
     """
 
-    def __init__(self):
+    def __init__(self, filepath=""):
+        """
+        构造函数
+
+        Args:
+            filepath: 打开的文件路径
+        """
+
         wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title='GitNote')
 
         # 初始化变量
@@ -41,20 +48,20 @@ class MainFrame(wx.Frame):
         width, height = self.GetSize().Get()
         wi.SetAsChild(self.GetHandle(), [0, 0, width, height])
         self.browser = cef.CreateBrowserSync(wi)
+        print(os.path.join(self.dir, "res", "html", "editor.html"))
         self.browser.LoadUrl(os.path.join(self.dir, "res", "html", "editor.html"))
+
+        js = cef.JavascriptBindings()
+        box = mdbox.MDBox(filepath)
+        js.SetObject('mdbox', box)
+
+        self.browser.SetJavascriptBindings(js)
 
         # 绑定事件
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.Bind(wx.EVT_SET_FOCUS, self.OnSetFocus)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_IDLE, self.OnIdle)
-
-        js = cef.JavascriptBindings()
-        box = mdbox.MDBox(os.path.join("note", "test.md"))
-        js.SetObject('mdbox', box)
-
-        self.browser.SetJavascriptBindings(js)
-
 
     def OnSetFocus(self, _):
         """
@@ -102,19 +109,32 @@ class MainApp(wx.App):
         :return: True
         """
 
-        frame = MainFrame()
-        frame.Show()
-
         return True
 
+    # --------------------------------------------------------------------------------
+    def show_mainframe(self, filepath=""):
+        """显示主框架
 
-def main():
+        Args:
+            default_file: 默认文件
+        """
+
+        self.frame = MainFrame(filepath)
+        self.frame.Show()
+
+
+def main(filepath=""):
     """
     主函数
     """
 
-    MainApp().MainLoop()
+    app = MainApp()
+    app.show_mainframe(filepath)
+    app.MainLoop()
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    else:
+        main()

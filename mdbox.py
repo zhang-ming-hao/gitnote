@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # coding:utf-8
 
+"""
+响应js与python的交互，对数据进行处理
+"""
+
+import os
 import codecs
 
 
@@ -14,7 +19,7 @@ class MDBox:
         构造函数
 
         Args:
-            mdpath: 文件路径
+            mdpath: 文件夹路径或文件路径
         """
 
         self.mdpath = mdpath
