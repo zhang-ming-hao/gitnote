@@ -13,22 +13,26 @@ class MdEditor {
 
         // 编辑器对象
         this.editor = editormd("editor_div", {
-            width: "95%",
+            width: "99%",
             height: this.GetEditorHeight(),
             syncScrolling: "single",
             path: "../lib/",
-            tex: true,
+            //tex: true,
             taskList: true,
             flowChart: true,
             sequenceDiagram : true,
-            onchange : () => {this.SaveContent()},
             toolbarIcons: ["undo", "redo", "|",
                 "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
                 "h1", "h2", "h3", "h4", "h5", "h6", "|",
                 "list-ul", "list-ol", "hr", "|",
                 "link", "reference-link", "image", "code", "code-block", "table", "|",
-                "goto-line", "watch", "preview", "fullscreen", "clear", "search",]
+                "goto-line", "watch", "preview", "fullscreen", "clear", "search"],
+            onchange : () => {this.SaveContent()}
+
         });
+
+        // 加载文件标题
+        this.GetTitle();
 
         // 加载文件内容
         this.GetContent();
@@ -62,19 +66,27 @@ class MdEditor {
         // 取得编辑器的offset高度
         let oTop = this.editorDiv.offset().top;
 
-        return wHeight - oTop - 10;
+        return wHeight - oTop - 80;
     }
 
-    // 取得md文件内容
+    // 取得文件标题
+    GetTitle() {
+        mdbox.GetTitle((title) =>{
+            this.title = title;
+        });
+    }
+
+    // 取得文件内容
     GetContent() {
-        mdbox.get_content((data) =>{
-            this.content = data;
+        mdbox.GetContent((content) =>{
+            alert(content);
+            this.content = content;
         });
     }
 
     // 保存文件内容
     SaveContent() {
-        mdbox.save_content(this.content)
+        mdbox.SaveContent(this.content)
     }
 }
 

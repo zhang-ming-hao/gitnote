@@ -47,9 +47,18 @@ class MainFrame(wx.Frame):
         wi = cef.WindowInfo()
         width, height = self.GetSize().Get()
         wi.SetAsChild(self.GetHandle(), [0, 0, width, height])
-        self.browser = cef.CreateBrowserSync(wi)
-        print(os.path.join(self.dir, "res", "html", "editor.html"))
-        self.browser.LoadUrl(os.path.join(self.dir, "res", "html", "editor.html"))
+
+        settings = {
+            "web_security_disabled": True       # 允许跨域请求
+        }
+
+        self.browser = cef.CreateBrowserSync(wi, settings=settings)
+        url = os.path.join(self.dir, "res", "html", "index.html")
+        #url = os.path.join(self.dir, "res", "html", "editor.html")
+        if len(filepath) == 0:
+            url += "?showtree=1"
+
+        self.browser.LoadUrl(url)
 
         js = cef.JavascriptBindings()
         box = mdbox.MDBox(filepath)
