@@ -71,22 +71,21 @@ class MdEditor {
 
     // 取得文件标题
     GetTitle() {
-        mdbox.GetTitle((title) =>{
+        window.parent.mdbox.GetTitle((title) =>{
             this.title = title;
         });
     }
 
     // 取得文件内容
     GetContent() {
-        mdbox.GetContent((content) =>{
-            alert(content);
+        window.parent.mdbox.GetContent((content) =>{
             this.content = content;
         });
     }
 
     // 保存文件内容
     SaveContent() {
-        mdbox.SaveContent(this.content)
+        window.parent.mdbox.SaveContent(this.content)
     }
 }
 
