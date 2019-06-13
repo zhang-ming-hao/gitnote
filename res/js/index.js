@@ -202,24 +202,38 @@ class Index {
         this.curNode = treeNode;
         if (treeNode.isParent) {
             mdbox.RenameFolder(this.GetPath(treeNode), newName,
-                (treeNode, newName, newPath, isSuccess) => this.RenameCallback(treeNode, newName, newPath, isSuccess)
+                (treeNode, newName, newPath, isSuccess) => this.RenameFolderCallback(treeNode, newName, newPath, isSuccess)
             );
         }
         else {
             mdbox.RenameNote(this.GetPath(treeNode), newName,
-                (newName, isSuccess) => this.RenameCallback(newName, isSuccess)
+                (newName, isSuccess) => this.RenameNoteCallback(newName, isSuccess)
             );
         }
 
         return false;
     }
 
-    // 重命名回调函数
-    RenameCallback(newName, isSuccess) {
+    // 重命名文件夹回调函数
+    RenameFolderCallback(newName, isSuccess) {
         let zTree = $.fn.zTree.getZTreeObj("tree");
 
          if (isSuccess) {
              zTree.cancelEditName(newName);
+         }
+         else {
+             zTree.cancelEditName();
+         }
+    }
+
+    // 重命名笔记回调函数
+    RenameNoteCallback(newName, isSuccess) {
+        let zTree = $.fn.zTree.getZTreeObj("tree");
+
+         if (isSuccess) {
+             zTree.cancelEditName(newName);
+             mdbox.SetCurrent(this.GetPath(this.curNode));
+             this.LoadEditor();
          }
          else {
              zTree.cancelEditName();
@@ -311,7 +325,7 @@ class Index {
             pId = pNode.pId;
         }
 
-        return paths.join("/");
+        return paths.join("\\");
     }
 }
 

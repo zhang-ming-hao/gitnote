@@ -12,6 +12,7 @@
 import os
 import wx
 import sys
+import configparser
 from cefpython3 import cefpython as cef
 
 import mdbox
@@ -41,6 +42,9 @@ class MainFrame(wx.Frame):
         # 窗口最大化
         self.Maximize()
 
+        # 初始化配置文件
+        self.config = self.InitConfig()
+
         # 初始化浏览器
         cef.Initialize()
 
@@ -54,14 +58,13 @@ class MainFrame(wx.Frame):
 
         self.browser = cef.CreateBrowserSync(wi, settings=settings)
         url = os.path.join(self.dir, "res", "html", "index.html")
-        #url = os.path.join(self.dir, "res", "html", "editor.html")
         if len(filepath) == 0:
             url += "?showtree=1"
 
         self.browser.LoadUrl(url)
 
         js = cef.JavascriptBindings()
-        box = mdbox.MDBox(filepath)
+        box = mdbox.MDBox(self.config, filepath)
         js.SetObject('mdbox', box)
 
         self.browser.SetJavascriptBindings(js)
@@ -71,6 +74,39 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_SET_FOCUS, self.OnSetFocus)
         self.Bind(wx.EVT_SIZE, self.OnSize)
         self.Bind(wx.EVT_IDLE, self.OnIdle)
+
+    def InitConfig(self):
+        """
+        初始化配置文件
+
+        Returns:
+            配置项
+        """
+
+        path = os.path.join(os.environ['HOMEDRIVE'], os.environ['HOMEPATH'], ".gitnote")
+        if not os.path.isdir(path):
+            os.mkdir(path)
+
+        default = {
+            "note": {
+                "path": r"d:\notes"
+            }
+        }
+
+        config = configparser.ConfigParser()
+        cfgpath = os.path.join(path, "config.ini")
+        if os.path.isfile(cfgpath):
+            config.read(cfgpath)
+
+        # 合并默认配置
+        for key in default:
+            if key not in config:
+                config[key] = default[key]
+
+        with open(cfgpath, 'w') as configfile:
+            config.write(configfile)
+
+        return config
 
     def OnSetFocus(self, _):
         """
@@ -130,6 +166,12 @@ class MainApp(wx.App):
 
         self.frame = MainFrame(filepath)
         self.frame.Show()
+
+    @property
+    def root_dir(self):
+        """程序所在的目录"""
+
+        return os.path.split(sys.argv[0])[0]
 
 
 def main(filepath=""):

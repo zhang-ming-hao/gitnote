@@ -16,16 +16,20 @@ class MDBox:
     Markdown数据处理类，需要JS端调用
     """
 
-    def __init__(self, mdpath):
+    def __init__(self, config, mdpath):
         """
         构造函数
 
         Args:
+            config: 配置项
             mdpath: 文件夹路径或文件路径
         """
 
         self.mdpath = mdpath
-        self.notedir = "note"
+        self.notedir = config["note"]["path"]
+
+        if not os.path.isdir(self.notedir):
+            os.makedirs(self.notedir)
 
     def GetList(self, path, callback):
         """
@@ -246,3 +250,35 @@ class MDBox:
             callback.Call()
         except:
             pass
+
+    def AddImage(self, callback):
+        """
+        向笔记中添加图片
+
+        Args:
+            callback: 回调函数
+        """
+
+        wildcard = """
+            PNG图片 (*.png)|*.png|
+            JPG图片 (*.jpg)|*.jpg|            
+            GIF图片 (*.gif)|*.gif
+            """
+
+        dlg = wx.FileDialog(
+            wx.GetApp().frame, message="选择图片",
+            wildcard=wildcard,
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_PREVIEW
+        )
+
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            name = os.path.split(path)[1]
+
+            respath = os.path.join(os.path.split(self.mdpath)[0], "res")
+            if not os.path.isdir(respath):
+                os.makedirs(respath)
+
+            dst = os.path.join(respath, name)
+            shutil.copy(path, dst)
+            callback.Call(dst)

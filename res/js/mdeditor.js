@@ -25,8 +25,29 @@ class MdEditor {
                 "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
                 "h1", "h2", "h3", "h4", "h5", "h6", "|",
                 "list-ul", "list-ol", "hr", "|",
-                "link", "reference-link", "image", "code", "code-block", "table", "|",
+                "link", "reference-link", "image_", "code", "code-block", "table", "|",
                 "goto-line", "watch", "preview", "fullscreen", "clear", "search"],
+            toolbarIconsClass : {
+                image_ : "fa-image"     // 自定义图片功能的图标
+            },
+            lang: {
+                toolbar: {
+                    image_: "添加图片"
+                }
+            },
+            toolbarHandlers: {
+                image_: (cm, icon, cursor, selection) => {
+                    window.parent.mdbox.AddImage((imgPath)=>{
+                        // 替换选中文本，如果没有选中文本，则直接插入
+                        cm.replaceSelection(`![](${imgPath})`);
+
+                        // 如果当前没有选中的文本，将光标移到要输入的位置
+                        if(selection === "") {
+                            cm.setCursor(cursor.line, cursor.ch + 1);
+                        }
+                    });
+                }
+            },
             onchange : () => {this.SaveContent()}
         });
 
