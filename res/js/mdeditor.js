@@ -28,7 +28,6 @@ class MdEditor {
                 "link", "reference-link", "image", "code", "code-block", "table", "|",
                 "goto-line", "watch", "preview", "fullscreen", "clear", "search"],
             onchange : () => {this.SaveContent()}
-
         });
 
         // 加载文件标题
