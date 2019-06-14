@@ -35,6 +35,8 @@ class MainFrame(wx.Frame):
 
         # 初始化变量
         self.dir = os.path.split(sys.argv[0])[0]
+        if len(self.dir) == 0:
+            self.dir = os.path.split(os.path.realpath(__file__))[0]
 
         # 加载图标
         self.SetIcon(wx.Icon(os.path.join(self.dir, "res", "images", "gitnote.ico"), wx.BITMAP_TYPE_ICO))
@@ -62,7 +64,6 @@ class MainFrame(wx.Frame):
             url += "?showtree=1"
 
         self.browser.LoadUrl(url)
-
         js = cef.JavascriptBindings()
         box = mdbox.MDBox(self.config, filepath)
         js.SetObject('mdbox', box)
@@ -166,12 +167,6 @@ class MainApp(wx.App):
 
         self.frame = MainFrame(filepath)
         self.frame.Show()
-
-    @property
-    def root_dir(self):
-        """程序所在的目录"""
-
-        return os.path.split(sys.argv[0])[0]
 
 
 def main(filepath=""):

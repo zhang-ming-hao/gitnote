@@ -4,3 +4,10 @@
 使用editor.md作为MarkDown编辑器。
 
 感谢上述开源项目的开发者。
+
+## 打包说明
+本项目使用的python版本为3.7，pyinstaller版本为3.4
+可使用如下命令进行打包：
+```
+pyinstaller GitNote.spec
+```
