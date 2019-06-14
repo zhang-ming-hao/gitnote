@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css">
+  <style type="text/css">
+    .content {
+      border-radius:5px;
+      margin: 0;
+      height: 150px;
+    }
+
+    .option {
+      border-radius:5px;
+      line-height: 150px;
+      text-align: center;
+    }
+
+    .icon {
+      font-size: 150px;
+    }
+
+    #clone, #training, #config{
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div id="layout" class="container">
+  <div class="row" style="text-align: center; margin-top: 20px;">
+    <img width="100" src="../images/gitnote.png"/><h1>欢迎使用GitNote</h1>
+  </div>
+  <div id="placeholder" class="row"></div>
+  <div id="introduction" class="row">
+    <div class="row">本软件具备如下功能：</div>
+    <hr class="row"/>
+    <div class="row">
+      <div class="function col-lg-6">
+        <div class="row content" style="border: 1px solid #2196f3;">
+          <div class="col-lg-4">
+            <img src="../images/editormd.png"/>
+          </div>
+          <div class="col-lg-8" style="margin-top: 20px;">
+            <p>使用Markdown进行笔记编写:</p>
+            <ul>
+              <li>支持代码块语法高亮</li>
+              <li>支持KaTex公式编辑</li>
+              <li>支持时序图、流程图编辑</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="function  col-lg-6">
+        <div class="row content" style="border: 1px solid #f05036;">
+          <div class="col-lg-4">
+            <img src="../images/git.png" style="margin-top: 5px;"/>
+          </div>
+          <div class="col-lg-8" style="margin-top: 20px;">
+            <p>多设备同步:</p>
+            <ul>
+              <li>将笔记上传到Github等代码托管平台</li>
+              <li>同步笔记内容和笔记中的图片</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="option" class="row" style="margin-top: 20px;">
+    <div class="row">您可以进行如下操作：</div>
+    <hr class="row"/>
+    <div class="row">
+      <div class="option col-lg-4">
+        <div id="clone" class="row content" style="border: 1px solid #7e649e;">
+          <div class="icon fa fa-cloud-download col-lg-4" style="color: #7e649e"></div>
+          <div class="col-lg-8">从远程克隆笔记</div>
+        </div>
+      </div>
+      <div class="option col-lg-4">
+        <div id="training" class="row content" style="border: 1px solid #789440;">
+          <div class="icon fa fa-pencil-square  col-lg-4" style="color: #789440"></div>
+          <div class="col-lg-8">Markdown语法演练</div>
+        </div>
+      </div>
+      <div class="option col-lg-4">
+        <div id="config" class="row content" style="border: 1px solid #bf8c00;">
+          <div class="icon fa fa-tasks col-lg-4" style="color: #bf8c00"></div>
+          <div class="col-lg-8">编辑软件配置项</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/wecome.js"></script>
+</body>
+</html>

@@ -84,13 +84,13 @@ class MainFrame(wx.Frame):
             配置项
         """
 
-        path = os.path.join(os.environ['HOMEDRIVE'], os.environ['HOMEPATH'], ".gitnote")
+        path = os.path.join(os.environ['USERPROFILE'], "Documents", "GitNote")
         if not os.path.isdir(path):
             os.mkdir(path)
 
         default = {
             "note": {
-                "path": r"d:\notes"
+                "path": os.path.join(path, "notes")
             }
         }
 

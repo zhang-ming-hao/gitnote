@@ -282,3 +282,27 @@ class MDBox:
             dst = os.path.join(respath, name)
             shutil.copy(path, dst)
             callback.Call(dst)
+
+    def AddImageForTraining(self, callback):
+        """
+        向演练场中添加图片
+
+        Args:
+            callback: 回调函数
+        """
+
+        wildcard = """
+            PNG图片 (*.png)|*.png|
+            JPG图片 (*.jpg)|*.jpg|            
+            GIF图片 (*.gif)|*.gif
+            """
+
+        dlg = wx.FileDialog(
+            wx.GetApp().frame, message="选择图片",
+            wildcard=wildcard,
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_PREVIEW
+        )
+
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            callback.Call(path)
