@@ -69,6 +69,7 @@ class MainFrame(wx.Frame):
         js.SetObject('mdbox', box)
 
         self.browser.SetJavascriptBindings(js)
+        print(dir(self.browser))
 
         # 绑定事件
         self.Bind(wx.EVT_CLOSE, self.OnClose)

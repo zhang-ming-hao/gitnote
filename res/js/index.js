@@ -1,3 +1,61 @@
+// 同步窗口类
+class Synchronous {
+    // 构造函数
+    constructor() {
+        // 弹出窗口DIV
+        this.dialogDiv = $("#sync_dialog");
+
+        // 步骤进度
+        this.step = $("#step");
+
+        this.step.loadStep({
+            //ystep的外观大小
+            //可选值：small,large
+            size: "large",
+            //ystep配色方案
+            //可选值：green,blue
+            color: "green",
+            //ystep中包含的步骤
+            steps: [{
+                title: "提交"
+            }, {
+                title: "获取"
+            }, {
+                title: "合并"
+            }, {
+                title: "推送"
+            }]
+        });
+    }
+
+    // 显示对话框
+    Show() {
+        this.dialogDiv.dialog({
+            closeOnEscape: false,
+            resizable: false,
+            height: "auto",
+            width: 430,
+            modal: true,
+            //隐藏默认的关闭按钮
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+            }
+        });
+
+        this.step.setStep(1);
+    }
+
+    // 关闭对话框
+    Close() {
+        this.dialogDiv.dialog("close");
+    }
+
+    // 下一步
+    Next() {
+        this.step.nextStep();
+    }
+}
+
 // 页面类
 class Index {
     // 构造函数
@@ -7,6 +65,12 @@ class Index {
 
         // 树DIV
         this.tree = $("#tree");
+
+        // 欢迎按钮
+        this.wecome = $("#wecome");
+
+        // 同步按钮
+        this.sync = $("#sync");
 
         // 确认对话框
         this.cdialog = $("#dialog-confirm");
@@ -26,6 +90,9 @@ class Index {
         // 是否显示目录树
         this.showtree = GetQueryString("showtree");
 
+        // 同步对话框
+        this.syncDlg = new Synchronous();
+
         // 布局
         this.Layout();
 
@@ -40,6 +107,10 @@ class Index {
         else {
             this.LoadEditor()
         }
+
+        // 事件绑定
+        this.wecome.click(() => this.ShowWecome());
+        this.sync.click(() => this.Sync());
     }
 
     // 布局
@@ -49,6 +120,7 @@ class Index {
         let h = $(window).height();
 
         // 计算控件大小
+        this.tree.css("height", h - 60 + "px");
         this.editor.css("height",  h - 2 + "px");
         if (this.showtree == 1) {
             this.nav.css("height",  h - 2 + "px");
@@ -327,8 +399,16 @@ class Index {
 
         return paths.join("\\");
     }
+
+    // 显示欢迎页面
+    ShowWecome() {
+        this.editor.attr("src", "welcome.html");
+    }
+
+    // 开始同步
+    Sync() {
+        this.syncDlg.Show();
+    }
 }
 
-$(document).ready(function () {
-   new Index();
-});
+let index = new Index();

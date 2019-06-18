@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <title>欢迎</title>
   <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../css/jquery-ui.min.css" type="text/css">
   <link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="../css/gauge.css" type="text/css">
   <style type="text/css">
     .content {
       border-radius:5px;
@@ -24,6 +26,12 @@
 
     #clone, #training, #config{
       cursor: pointer;
+    }
+
+    .gauge {
+      margin-left: 20px;
+      margin-right: 20px;
+      height: 20px;
     }
   </style>
 </head>
@@ -93,7 +101,20 @@
     </div>
   </div>
 </div>
+
+<div id="clone_dlg" title="从远程克隆笔记" style="display: none;overflow: hidden;">
+  <div class="form-group">
+    <label for="remote">远程Git地址</label>
+    <input type="text" class="form-control" id="remote">
+  </div>
+</div>
+
+<div id="cloning_dlg" title="正在克隆" style="display: none;">
+  <div class="gauge"></div>
+</div>
+
 <script src="../js/jquery.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
 <script src="../js/wecome.js"></script>
 </body>
 </html>

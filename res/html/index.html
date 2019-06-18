@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="../css/style.css" type="text/css">
   <link rel="stylesheet" href="../css/jquery-ui.min.css" type="text/css">
   <link rel="stylesheet" href="../css/zTreeStyleAwesome.css" type="text/css">
+  <link rel="stylesheet" href="../css/ystep.css" type="text/css">
+  <link rel="stylesheet" href="../css/gauge.css" type="text/css">
   <style type="text/css">
     *{
       padding: 0;
@@ -71,22 +73,56 @@
     #fname {
       color: red;
     }
+
+    #step {
+      margin-left: 20px;
+    }
+
+    .gauge {
+      margin-left: 20px;
+      margin-right: 20px;
+      height: 20px;
+    }
+
+    #wecome {
+      float: left;
+      margin-left: 110px;
+      cursor: pointer;
+    }
+
+    #sync {
+      float: left;
+      color: #da4a30;
+      font-size: 30px;
+      line-height: 30px;
+      margin-left: 20px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 <div id="nav">
   <div id="tree" class="ztree"></div>
+  <div>
+    <div id="wecome"><img width="30" src="../images/gitnote.png" title="欢迎"/></div>
+    <div id="sync" class="fa fa-refresh" title="同步"></div>
+  </div>
 </div>
 <iframe id="editor" src="welcome.html"></iframe>
 <div id="dialog-confirm" style="display: none">
   <div id="warning" class="fa fa-exclamation-triangle"></div>
   <p id="msg">确认删除<span id="ftype"></span>：<span id="fname"></span>吗？</p>
 </div>
+<div id="sync_dialog" title="正在同步" style="display: none;overflow: hidden;">
+  <div id="step"></div>
+  <div class="gauge"></div>
+</div>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/jquery-ui.min.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/jquery.ztree.core.js"></script>
 <script src="../js/jquery.ztree.exedit.min.js"></script>
+<script src="../js/ystep.js"></script>
 <script src="../js/index.js"></script>
 </body>
 </html>
